@@ -235,3 +235,5 @@ Para acessar a página HTML, devemos informar o IP da máquina guest na aba de p
 
 ![Screenshot from 2023-04-12 17-47-15](https://user-images.githubusercontent.com/47951275/231582900-f4a72458-5f0a-4434-9fb1-2f0000815181.png)
 
+Ao fim deste tutorial, deve ser possível visualizar a página HTML hospedada pelo buildroot através do servidor HTTP que criamos com script python, como também, deve ser possível visualizar diversas informações importantes do sistema como a lista de processos ativos na máquina guest.
+
