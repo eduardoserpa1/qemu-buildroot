@@ -1,10 +1,11 @@
-# Trabalho 1
-José Eduardo Rodrigues Serpa (20200311)
+# Tutorial de Exucução do Trabalho 1
+José Eduardo Rodrigues Serpa (20200311) e
 Nicolle Canceri Lumertz (20103640)
 
-Após concluirmos todas as etapas para a configuração do buildroot, devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts.
 
-Devemos alterar o campo <IP_DO_HOST> para o ip da maquina na qual está hospedando o buildroot. Para visualizar o ip da maquina host (como também na máquina guest), devemos executar o comando ifconfig.
+Após concluirmos todas as etapas para a configuração do buildroot (tutorial 1.1, 1.2 e 1.3), devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts.
+
+Devemos alterar o campo <IP_DO_HOST> para o ip da máquina na qual está hospedando o buildroot. Para visualizar o ip da máquina host (como também na máquina guest), devemos executar o comando ifconfig.
 
 ![Screenshot from 2023-04-12 18-04-47](https://user-images.githubusercontent.com/47951275/231584814-efaa7650-b296-4e76-8802-8fb0162c32fc.png)
 
