@@ -147,9 +147,10 @@ if __name__ == '__main__':
     print("Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER))
 ```
 ![Screenshot from 2023-04-12 17-47-15](https://user-images.githubusercontent.com/47951275/231582900-f4a72458-5f0a-4434-9fb1-2f0000815181.png)
- file:///home/ze/Pictures/Screenshots/Screenshot%20from%202023-04-12%2017-47-39.png
- 
- 
+
+![Screenshot from 2023-04-12 17-47-39](https://user-images.githubusercontent.com/47951275/231583399-6a72ee92-3b64-4372-9ac5-3f363b06191a.png)
+
+
  ```
  #!/bin/sh
 #
