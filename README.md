@@ -227,10 +227,11 @@ Em seguida, após salvarmos o código, iremos executa-lo utilizando o comando 'p
 
 Contudo, deveremos obter um resultado semelhante ao print abaixo.
 
+![Screenshot from 2023-04-12 18-24-49](https://user-images.githubusercontent.com/47951275/231588586-cb83a489-1910-4644-be0e-40556554c53a.png)
+
+Com isso, temos certeza de que o servidor foi inciado com êxito, e poderá ser acessado via navegador na máquina host.
+
+Para acessar a página HTML, devemos informar o IP da máquina guest na aba de pesquisa do navegador junto com a porta utilizada pelo servidor http do buildroot, como demonstra a imagem abaixo.
+
 ![Screenshot from 2023-04-12 17-47-15](https://user-images.githubusercontent.com/47951275/231582900-f4a72458-5f0a-4434-9fb1-2f0000815181.png)
-
-![Screenshot from 2023-04-12 17-47-39](https://user-images.githubusercontent.com/47951275/231583399-6a72ee92-3b64-4372-9ac5-3f363b06191a.png)
-
-
-
 
