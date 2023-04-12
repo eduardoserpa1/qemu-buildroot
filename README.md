@@ -2,11 +2,93 @@
 José Eduardo Rodrigues Serpa (20200311)
 Nicolle Canceri Lumertz (20103640)
 
+Após concluirmos todas as etapas para a configuração do buildroot, devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts.
 
+Devemos alterar o campo <IP_DO_HOST> para o ip da maquina na qual está hospedando o buildroot. Para visualizar o ip da maquina host (como também na máquina guest), devemos executar o comando ifconfig.
+
+![Screenshot from 2023-04-12 18-04-47](https://user-images.githubusercontent.com/47951275/231584814-efaa7650-b296-4e76-8802-8fb0162c32fc.png)
+
+A linha 'inet', informa o ip que deve ser substituido pelo label <IP_DO_HOST> apresentado no trecho de código abaixo.
+
+ ```
+ #!/bin/sh
+#
+# Configuring host communication.
+#
+
+case "$1" in
+  start)
+	printf "Configuring host communication."
+	
+	/sbin/ifconfig eth0 192.168.1.10 up
+	/sbin/route add -host <IP_DO_HOST> dev eth0
+	/sbin/route add default gw <IP_DO_HOST>
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  stop)
+	printf "Shutdown host communication. "
+	/sbin/route del default
+	/sbin/ifdown -a
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  restart|reload)
+	"$0" stop
+	"$0" start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+```
+
+Para que as modificações sejam aplicadas, será necessário recompilar a máquina guest. Para isso, execute o comando 'make'.
+
+Após a execução do comando make, iremos executar o sistema para testar caso a conexão foi estabelecida com sucesso, para isso, execute a emulação da máquina guest com o seguinte comando
+
+```
+sudo qemu-system-i386 --device e1000,netdev=eth0,mac=aa:bb:cc:dd:ee:ff \
+	--netdev tap,id=eth0,script=custom-scripts/qemu-ifup \
+	--kernel output/images/bzImage \
+	--hda output/images/rootfs.ext2 \
+	--nographic \
+	--append "console=ttyS0 root=/dev/sda" 
+```
+
+Dentro da máquina guest, teste a conexão com o host utilizando o comando 'ping', com alvo no ip da máquina host.
+
+Caso o ping seja efetuado com sucesso, podemos iniciar a configuração do ambiente pyhton que irá iniciar o servidor http.
+
+Antes de executarmos qualquer código python, será necessário executar o comando 'make menuconfig' para entrar nas configurações do buildroot e preparar o interpretador python.
+
+ALERTA: Antes de fechar o meenu de configurações, não esqueça de salvar as alterações.
+
+```
+-- Target Packeges
+    -- Interpreter languages and scripting
+      [*] python3 
+```
+
+Em seguida, devemos também configurar o WCHAR, utilizando a seguinte configuração. Novamente iremos executar 'make menuconfig'.
+
+```
+ -- Toolchain
+    C library (uClibc-ng) -->
+    .
+    .
+    .
+    [*] Enable WCHAR support
+```
+
+Após concluirmos as etapas anteriores, devemos novamente executar o comando 'make' para que as alterações sejam aplicadas com sucesso.
+
+Agora que já preparamos todo ambiente para que possamos montar nosso servidor, iremos desenvolver e executar o código abaixo, qual é responsável por hospedar nosso servidor http, como também montar uma página HTML com informações básicas da máquina guest. 
 
 ```python
 
-iimport os
+import os
 import sys
 import time
 import socket
@@ -117,8 +199,6 @@ def generate_html():
 
 
 
-
-
 class MyHandler(BaseHTTPRequestHandler):
     def do_HEAD(s):
         s.send_response(200)
@@ -129,11 +209,6 @@ class MyHandler(BaseHTTPRequestHandler):
         s.send_response(200)
         s.send_header("Content-type", "text/html")
         s.end_headers()
-        #s.wfile.write("<html><head><title>Title goes here.</title></head>".encode())
-        #s.wfile.write("<body><p>This is a test.</p>".encode())
-        # If someone went to "http://something.somewhere.net/foo/bar/",
-        # then s.path equals "/foo/bar/".
-        #s.wfile.write(f"<p>You accessed path: {s.path}</p>".encode())
         s.wfile.write(generate_html().encode())
 
 if __name__ == '__main__':
@@ -146,42 +221,16 @@ if __name__ == '__main__':
     httpd.server_close()
     print("Server Stops - %s:%s" % (HOST_NAME, PORT_NUMBER))
 ```
+
+Para editar códigos na máquina guest, devemos utilizar o editor de texto 'vi', com o comando 'vi <NOME_DO_ARQUIVO>.py'.
+Em seguida, após salvarmos o código, iremos executa-lo utilizando o comando 'python <NOME_DO_ARQUIVO>.py'.
+
+Contudo, deveremos obter um resultado semelhante ao print abaixo.
+
 ![Screenshot from 2023-04-12 17-47-15](https://user-images.githubusercontent.com/47951275/231582900-f4a72458-5f0a-4434-9fb1-2f0000815181.png)
 
 ![Screenshot from 2023-04-12 17-47-39](https://user-images.githubusercontent.com/47951275/231583399-6a72ee92-3b64-4372-9ac5-3f363b06191a.png)
 
 
- ```
- #!/bin/sh
-#
-# Configuring host communication.
-#
 
-case "$1" in
-  start)
-	printf "Configuring host communication."
-	
-	/sbin/ifconfig eth0 192.168.1.10 up
-	/sbin/route add -host 10.115.240.143 dev eth0
-	/sbin/route add default gw 10.115.240.143
-	[ $? = 0 ] && echo "OK" || echo "FAIL"
-	;;
-  stop)
-	printf "Shutdown host communication. "
-	/sbin/route del default
-	/sbin/ifdown -a
-	[ $? = 0 ] && echo "OK" || echo "FAIL"
-	;;
-  restart|reload)
-	"$0" stop
-	"$0" start
-	;;
-  *)
-	echo "Usage: $0 {start|stop|restart}"
-	exit 1
-esac
-
-exit $?
-
-```
 
