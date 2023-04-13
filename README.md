@@ -2,6 +2,12 @@
 José Eduardo Rodrigues Serpa (20200311) e
 Nicolle Canceri Lumertz (20103640)
 
+Para executar o trabalho precisamos seguir os seguintes passos:
+- Configurações Iniciais
+- Configurações de Ip
+- Configurações de Python
+- Adicionar o codigo do servidor HTTP
+- Subir o servidor HTTP
 
 Após concluirmos todas as etapas para a configuração do buildroot (tutorial 1.1, 1.2 e 1.3), devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts.
 
