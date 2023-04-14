@@ -3,15 +3,18 @@ José Eduardo Rodrigues Serpa (20200311) e
 Nicolle Canceri Lumertz (20103640)
 
 Para executar o trabalho precisamos seguir os seguintes passos:
-- Configurações Iniciais
-- Configurações de Ip
-- Configurações de Python
-- Adicionar o codigo do servidor HTTP
-- Subir o servidor HTTP
+- [Configurações Iniciais](#configurações-iniciais)
+- [Configurações de Ip](#configurações-de-ip)
+- [Configurações de Python](#configurações-de-python)
+- [Adicionar o codigo do servidor HTTP](#adicionar-o-codigo-do-servidor-http)
+- [Subir o servidor HTTP](#subir-o-servidor-http)
 
-Após concluirmos todas as etapas para a configuração do buildroot (tutorial 1.1, 1.2 e 1.3), devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts.
 
-Devemos alterar o campo <IP_DO_HOST> para o ip da máquina na qual está hospedando o buildroot. Para visualizar o ip da máquina host (como também na máquina guest), devemos executar o comando ifconfig.
+## Configurações Iniciais
+Inicialmente devemos concluir todas as etapas de configuração do builroot disponíveis os tutoriais 1.1, 1.2 e 1.3 para seguir este tutorial.
+
+## Configurações de Ip
+Devemos primeiramente, para iniciar o servidor http, estabelecer a conexão entre o guest e o host, para isso, devemos modificar um script 'S41network-config' encontrado na diretório custom_scripts. Devemos alterar o campo <IP_DO_HOST> para o ip da máquina na qual está hospedando o buildroot. Para visualizar o ip da máquina host (como também na máquina guest), devemos executar o comando ifconfig.
 
 ![Screenshot from 2023-04-12 18-04-47](https://user-images.githubusercontent.com/47951275/231584814-efaa7650-b296-4e76-8802-8fb0162c32fc.png)
 
@@ -68,6 +71,7 @@ Dentro da máquina guest, teste a conexão com o host utilizando o comando 'ping
 
 Caso o ping seja efetuado com sucesso, podemos iniciar a configuração do ambiente pyhton que irá iniciar o servidor http.
 
+## Configurações de Python
 Antes de executarmos qualquer código python, será necessário executar o comando 'make menuconfig' para entrar nas configurações do buildroot e preparar o interpretador python.
 
 ALERTA: Antes de fechar o meenu de configurações, não esqueça de salvar as alterações.
@@ -91,7 +95,9 @@ Em seguida, devemos também configurar o WCHAR, utilizando a seguinte configura�
 
 Após concluirmos as etapas anteriores, devemos novamente executar o comando 'make' para que as alterações sejam aplicadas com sucesso.
 
-Agora que já preparamos todo ambiente para que possamos montar nosso servidor, iremos desenvolver e executar o código abaixo, qual é responsável por hospedar nosso servidor http, como também montar uma página HTML com informações básicas da máquina guest. 
+
+## Adicionar o codigo do servidor HTTP
+Agora que já preparamos todo ambiente para que possamos montar nosso servidor, iremos desenvolver e executar o código abaixo, qual é responsável por hospedar nosso servidor http, como também montar uma página HTML com informações básicas da máquina guest.
 
 ```python
 
@@ -230,6 +236,8 @@ if __name__ == '__main__':
 ```
 
 Para editar códigos na máquina guest, devemos utilizar o editor de texto 'vi', com o comando 'vi <NOME_DO_ARQUIVO>.py'.
+
+## Subir o servidor HTTP
 Em seguida, após salvarmos o código, iremos executa-lo utilizando o comando 'python <NOME_DO_ARQUIVO>.py'.
 
 Contudo, deveremos obter um resultado semelhante ao print abaixo.
